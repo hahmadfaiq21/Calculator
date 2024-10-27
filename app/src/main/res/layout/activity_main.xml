@@ -18,10 +18,11 @@
             android:id="@+id/tv_workings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:lines="2"
             android:maxLines="2"
             android:text=""
-            android:textSize="25sp"
+            android:textSize="32sp"
             app:layout_constraintBottom_toTopOf="@id/tv_results"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,16 +32,17 @@
             android:id="@+id/tv_results"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="8dp"
             android:lines="1"
             android:maxLines="1"
             android:text=""
             android:textAlignment="textEnd"
             android:textColor="@color/white"
-            android:textSize="40sp"
+            android:textSize="64sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tv_workings" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout style="@style/button_row">

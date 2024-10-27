@@ -9,6 +9,7 @@ import com.github.hahmadfaiq21.calculatorapp.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var isResultDisplayed = false
     private var canAddOperation = false
     private var canAddDecimal = true
 
@@ -32,16 +33,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun operatorAction(view: View) {
-        if (view is Button && canAddOperation) {
-            binding.tvWorkings.append(view.text)
-            canAddOperation = false
-            canAddDecimal = true
+        if (view is Button) {
+            if (isResultDisplayed) {
+                binding.tvWorkings.text = binding.tvResults.text
+                binding.tvResults.text = getString(R.string.empty_string)
+                isResultDisplayed = false
+            }
+
+            if (canAddOperation) {
+                binding.tvWorkings.append(view.text)
+                canAddOperation = false
+                canAddDecimal = true
+            }
         }
     }
 
     fun allClearAction(view: View) {
-        binding.tvWorkings.text = ""
-        binding.tvResults.text = ""
+        binding.tvWorkings.text = getString(R.string.empty_string)
+        binding.tvResults.text = getString(R.string.empty_string)
     }
 
     fun backspaceAction(view: View) {
@@ -53,6 +62,7 @@ class MainActivity : AppCompatActivity() {
 
     fun equalsAction(view: View) {
         binding.tvResults.text = formatResult(calculateResults())
+        isResultDisplayed = true
     }
 
     private fun calculateResults(): Float {
