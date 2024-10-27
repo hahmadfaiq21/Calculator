@@ -48,11 +48,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun allClearAction(view: View) {
         binding.tvWorkings.text = getString(R.string.empty_string)
         binding.tvResults.text = getString(R.string.empty_string)
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun backspaceAction(view: View) {
         val length = binding.tvWorkings.length()
         if (length > 0) {
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun equalsAction(view: View) {
         binding.tvResults.text = formatResult(calculateResults())
         isResultDisplayed = true
