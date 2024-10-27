@@ -14,7 +14,6 @@
         <item name="backgroundTint">@color/dark_grey</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textSize">25sp</item>
-        <item name="android:onClick">numberAction</item>
     </style>
 
     <style name="button_operator">
@@ -23,6 +22,5 @@
         <item name="android:layout_weight">1</item>
         <item name="android:textColor">@color/orange</item>
         <item name="android:textSize">40sp</item>
-        <item name="android:onClick">operatorAction</item>
     </style>
 </resources>

@@ -24,8 +24,9 @@ class MainActivity : AppCompatActivity() {
                 if (canAddDecimal)
                     binding.tvWorkings.append(view.text)
                 canAddDecimal = false
-            } else
+            } else {
                 binding.tvWorkings.append(view.text)
+            }
             canAddOperation = true
         }
     }
@@ -45,77 +46,31 @@ class MainActivity : AppCompatActivity() {
 
     fun backspaceAction(view: View) {
         val length = binding.tvWorkings.length()
-        if (length > 0)
+        if (length > 0) {
             binding.tvWorkings.text = binding.tvWorkings.text.subSequence(0, length - 1)
+        }
     }
 
     fun equalsAction(view: View) {
-        binding.tvResults.text = calculateResults()
+        binding.tvResults.text = formatResult(calculateResults())
     }
 
-    private fun calculateResults(): String {
+    private fun calculateResults(): Float {
         val digitsOperators = digitsOperators()
-        if (digitsOperators.isEmpty()) return ""
+        if (digitsOperators.isEmpty()) return 0f
 
         val timesDivision = timesDivisionCalculate(digitsOperators)
-        if (timesDivision.isEmpty()) return ""
+        if (timesDivision.isEmpty()) return 0f
 
-        val result = addSubtractCalculate(timesDivision)
-        return result.toString()
+        return addSubtractCalculate(timesDivision)
     }
 
-    private fun addSubtractCalculate(passedList: MutableList<Any>): Float {
-        var result = passedList[0] as Float
-        for (i in passedList.indices) {
-            if (passedList[i] is Char && i != passedList.lastIndex) {
-                val operator = passedList[i]
-                val nextDigit = passedList[i + 1] as Float
-                if (operator == '+')
-                    result += nextDigit
-                if (operator == '–')
-                    result -= nextDigit
-            }
+    private fun formatResult(result: Float): String {
+        return if (result % 1 == 0f) {
+            result.toInt().toString()
+        } else {
+            result.toString()
         }
-        return result
-    }
-
-    private fun timesDivisionCalculate(passedList: MutableList<Any>): MutableList<Any> {
-        var list = passedList
-        while (list.contains('×') || list.contains('÷')) {
-            list = calTimesDiv(list)
-        }
-        return list
-    }
-
-    private fun calTimesDiv(passedList: MutableList<Any>): MutableList<Any> {
-        val newList = mutableListOf<Any>()
-        var restartIndex = passedList.size
-        for (i in passedList.indices) {
-            if (passedList[i] is Char && i != passedList.lastIndex && i < restartIndex) {
-                val operator = passedList[i]
-                val prevDigit = passedList[i - 1] as Float
-                val nextDigit = passedList[i + 1] as Float
-                when (operator) {
-                    '×' -> {
-                        newList.add(prevDigit * nextDigit)
-                        restartIndex = i + 1
-                    }
-
-                    '÷' -> {
-                        newList.add(prevDigit / nextDigit)
-                        restartIndex = i + 1
-                    }
-
-                    else -> {
-                        newList.add(prevDigit)
-                        newList.add(operator)
-                    }
-                }
-            }
-            if (i > restartIndex)
-                newList.add(passedList[i])
-        }
-        return newList
     }
 
     private fun digitsOperators(): MutableList<Any> {
@@ -125,14 +80,53 @@ class MainActivity : AppCompatActivity() {
             if (character.isDigit() || character == '.') {
                 currentDigit += character
             } else {
-                list.add(currentDigit.toFloat())
-                currentDigit = ""
+                if (currentDigit.isNotEmpty()) {
+                    list.add(currentDigit.toFloat())
+                    currentDigit = ""
+                }
                 list.add(character)
             }
-
-            if (currentDigit != "")
-                list.add(currentDigit.toFloat())
+        }
+        if (currentDigit.isNotEmpty()) {
+            list.add(currentDigit.toFloat())
         }
         return list
     }
+
+    private fun timesDivisionCalculate(passedList: MutableList<Any>): MutableList<Any> {
+        val newList = mutableListOf<Any>()
+        var i = 0
+        while (i < passedList.size) {
+            if (passedList[i] is Char && (passedList[i] == '×' || passedList[i] == '÷')) {
+                val prev = newList.removeLast() as Float
+                val next = passedList[i + 1] as Float
+                val result = if (passedList[i] == '×') prev * next else prev / next
+                newList.add(result)
+                i += 2  // Skip the next number
+            } else {
+                newList.add(passedList[i])
+                i++
+            }
+        }
+        return newList
+    }
+
+    private fun addSubtractCalculate(passedList: MutableList<Any>): Float {
+        var result = passedList[0] as Float
+        var i = 1
+
+        while (i < passedList.size) {
+            val operator = passedList[i] as Char
+            val nextDigit = passedList[i + 1] as Float
+
+            when (operator) {
+                '+' -> result += nextDigit
+                '–' -> result -= nextDigit
+            }
+            i += 2
+        }
+
+        return result
+    }
+
 }

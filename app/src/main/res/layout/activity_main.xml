@@ -59,6 +59,7 @@
 
         <Button
             style="@style/button_operator"
+            android:onClick="operatorAction"
             android:background="@color/dark_grey"
             android:text="@string/divides" />
     </LinearLayout>
@@ -67,18 +68,22 @@
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/seven" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/eight" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/nine" />
 
         <Button
             style="@style/button_operator"
+            android:onClick="operatorAction"
             android:background="@color/dark_grey"
             android:text="@string/times" />
     </LinearLayout>
@@ -87,18 +92,22 @@
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/four" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/five" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/six" />
 
         <Button
             style="@style/button_operator"
+            android:onClick="operatorAction"
             android:background="@color/dark_grey"
             android:text="@string/minus" />
     </LinearLayout>
@@ -107,18 +116,22 @@
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/one" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/two" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/three" />
 
         <Button
             style="@style/button_operator"
+            android:onClick="operatorAction"
             android:background="@color/dark_grey"
             android:text="@string/plus" />
     </LinearLayout>
@@ -127,10 +140,12 @@
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/decimal" />
 
         <Button
             style="@style/button_number"
+            android:onClick="numberAction"
             android:text="@string/zero" />
 
         <Button
