@@ -133,7 +133,6 @@
             style="@style/button_number"
             android:text="@string/zero" />
 
-
         <Button
             style="@style/button_operator"
             android:layout_weight="2"
