@@ -21,14 +21,19 @@ class MainActivity : AppCompatActivity() {
 
     fun numberAction(view: View) {
         if (view is Button) {
+            val currentText = binding.tvWorkings.text.toString()
             if (view.text == ".") {
-                if (canAddDecimal)
-                    binding.tvWorkings.append(view.text)
-                canAddDecimal = false
+                if (canAddDecimal) {
+                    if (currentText.isEmpty() || currentText.last() in listOf('+', '–', '×', '÷')) {
+                        binding.tvWorkings.append("0")
+                    }
+                    binding.tvWorkings.append(".")
+                    canAddDecimal = false
+                }
             } else {
                 binding.tvWorkings.append(view.text)
+                canAddOperation = true
             }
-            canAddOperation = true
         }
     }
 
@@ -40,7 +45,8 @@ class MainActivity : AppCompatActivity() {
                 isResultDisplayed = false
             }
 
-            if (canAddOperation) {
+            val currentText = binding.tvWorkings.text.toString()
+            if (currentText.isNotEmpty() && canAddOperation) {
                 binding.tvWorkings.append(view.text)
                 canAddOperation = false
                 canAddDecimal = true
@@ -52,6 +58,9 @@ class MainActivity : AppCompatActivity() {
     fun allClearAction(view: View) {
         binding.tvWorkings.text = getString(R.string.empty_string)
         binding.tvResults.text = getString(R.string.empty_string)
+        isResultDisplayed = false
+        canAddOperation = false
+        canAddDecimal = true
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -64,12 +73,20 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("UNUSED_PARAMETER")
     fun equalsAction(view: View) {
-        binding.tvResults.text = formatResult(calculateResults())
-        isResultDisplayed = true
+        var currentText = binding.tvWorkings.text.toString().trim()
+        if (currentText.isNotEmpty() && currentText.last().isOperator()) {
+            currentText = currentText.substring(0, currentText.length - 1)
+        }
+        if (currentText.isNotEmpty()) {
+            binding.tvResults.text = formatResult(calculateResults(currentText))
+            isResultDisplayed = true
+        } else {
+            binding.tvResults.text = getString(R.string.error_message)
+        }
     }
 
-    private fun calculateResults(): Float {
-        val digitsOperators = digitsOperators()
+    private fun calculateResults(workings: String): Float {
+        val digitsOperators = digitsOperators(workings)
         if (digitsOperators.isEmpty()) return 0f
 
         val timesDivision = timesDivisionCalculate(digitsOperators)
@@ -86,10 +103,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun digitsOperators(): MutableList<Any> {
+    private fun digitsOperators(workings: String): MutableList<Any> {
         val list = mutableListOf<Any>()
         var currentDigit = ""
-        for (character in binding.tvWorkings.text) {
+        for (character in workings) {
             if (character.isDigit() || character == '.') {
                 currentDigit += character
             } else {
@@ -115,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                 val next = passedList[i + 1] as Float
                 val result = if (passedList[i] == '×') prev * next else prev / next
                 newList.add(result)
-                i += 2  // Skip the next number
+                i += 2
             } else {
                 newList.add(passedList[i])
                 i++
@@ -140,6 +157,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun Char.isOperator(): Boolean {
+        return this in listOf('+', '–', '×', '÷')
     }
 
 }

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">CalculatorApp</string>
     <string name="empty_string" />
+    <string name="error_message">Invalid input</string>
     <string name="equals">=</string>
     <string name="zero">0</string>
     <string name="decimal">.</string>
