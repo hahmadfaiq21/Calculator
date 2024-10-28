@@ -46,10 +46,25 @@ class MainActivity : AppCompatActivity() {
             }
 
             val currentText = binding.tvWorkings.text.toString()
-            if (currentText.isNotEmpty() && canAddOperation) {
-                binding.tvWorkings.append(view.text)
-                canAddOperation = false
-                canAddDecimal = true
+
+            if (currentText.isNotEmpty()) {
+                if (currentText.last().isOperator()) {
+                    val newText = getString(
+                        R.string.concatenated_operator_text,
+                        currentText.dropLast(1),
+                        view.text
+                    )
+                    binding.tvWorkings.text = newText
+                } else if (canAddOperation) {
+                    val newText = getString(
+                        R.string.concatenated_operator_text,
+                        currentText,
+                        view.text
+                    )
+                    binding.tvWorkings.text = newText
+                    canAddOperation = false
+                    canAddDecimal = true
+                }
             }
         }
     }
@@ -68,6 +83,7 @@ class MainActivity : AppCompatActivity() {
         val length = binding.tvWorkings.length()
         if (length > 0) {
             binding.tvWorkings.text = binding.tvWorkings.text.subSequence(0, length - 1)
+            canAddOperation = true
         }
     }
 
@@ -162,5 +178,4 @@ class MainActivity : AppCompatActivity() {
     private fun Char.isOperator(): Boolean {
         return this in listOf('+', '–', '×', '÷')
     }
-
 }
