@@ -46,34 +46,30 @@ class MainActivity : AppCompatActivity() {
 
     fun operatorAction(view: View) {
         if (view is Button) {
+            val currentText = binding.tvWorkings.text.toString()
             if (isResultDisplayed) {
-                binding.tvWorkings.text = binding.tvResults.text
+                val resultText = binding.tvResults.text.toString().ifEmpty {
+                    getString(R.string.zero)
+                }
+                binding.tvWorkings.text = resultText
                 binding.tvResults.text = getString(R.string.empty_string)
                 isResultDisplayed = false
             }
 
-            val currentText = binding.tvWorkings.text.toString()
-
-            if (currentText.isNotEmpty()) {
-                if (currentText.last().isOperator()) {
-                    val newText = getString(
-                        R.string.concatenated_operator_text,
-                        currentText.dropLast(1),
-                        view.text
-                    )
-                    binding.tvWorkings.text = newText
-                } else if (canAddOperation) {
-                    val newText = getString(
-                        R.string.concatenated_operator_text,
-                        currentText,
-                        view.text
-                    )
-                    binding.tvWorkings.text = newText
-                    canAddOperation = false
-                    canAddDecimal = true
-                }
+            if (currentText.isNotEmpty() && currentText.last().isOperator()) {
+                val newText = getString(
+                    R.string.concatenated_operator_text,
+                    currentText.dropLast(1),
+                    view.text
+                )
+                binding.tvWorkings.text = newText
+            } else if (currentText.isNotEmpty() && canAddOperation) {
+                binding.tvWorkings.append(view.text)
+                canAddOperation = false
+                canAddDecimal = true
             }
         }
+
     }
 
     @Suppress("UNUSED_PARAMETER")
@@ -91,7 +87,7 @@ class MainActivity : AppCompatActivity() {
         val length = binding.tvWorkings.length()
         if (length > 0) {
             binding.tvWorkings.text = binding.tvWorkings.text.subSequence(0, length - 1)
-            canAddOperation = true
+            isResultDisplayed = false
         }
     }
 
