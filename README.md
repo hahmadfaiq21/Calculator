@@ -1,4 +1,4 @@
-﻿# Calculator App with Basic Operators Using TextView and Button
+﻿# Calculator with Basic Operators Using TextView and Button
 
 ### Calculator App Interface
  <p align="center">
