@@ -2,5 +2,5 @@
 
 ### Calculator App Interface
  <p align="center">
-   <img src="https://github.com/user-attachments/assets/fb091154-cee8-4c24-aab1-5c8cf4b9eafb">
+   <img src="https://github.com/user-attachments/assets/377806bf-516f-4bf2-a781-073c2ccecad4">
  </p>
