@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.addTextChangedListener
 import com.github.hahmadfaiq21.calculatorapp.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +18,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        binding.tvResults.text = getString(R.string.zero)
+        binding.tvWorkings.addTextChangedListener {
+            if (it.toString().isNotEmpty()) {
+                binding.tvResults.text = getString(R.string.empty_string)
+            }
+        }
     }
 
     fun numberAction(view: View) {
@@ -72,7 +79,7 @@ class MainActivity : AppCompatActivity() {
     @Suppress("UNUSED_PARAMETER")
     fun allClearAction(view: View) {
         binding.tvWorkings.text = getString(R.string.empty_string)
-        binding.tvResults.text = getString(R.string.empty_string)
+        defaultValue()
         isResultDisplayed = false
         canAddOperation = false
         canAddDecimal = true
@@ -80,6 +87,7 @@ class MainActivity : AppCompatActivity() {
 
     @Suppress("UNUSED_PARAMETER")
     fun backspaceAction(view: View) {
+        defaultValue()
         val length = binding.tvWorkings.length()
         if (length > 0) {
             binding.tvWorkings.text = binding.tvWorkings.text.subSequence(0, length - 1)
@@ -173,6 +181,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         return result
+    }
+
+    private fun defaultValue() {
+        binding.tvResults.text = getString(R.string.zero)
+        binding.tvWorkings.addTextChangedListener {
+            if (it.toString().isNotEmpty()) {
+                binding.tvResults.text = getString(R.string.empty_string)
+            }
+        }
     }
 
     private fun Char.isOperator(): Boolean {
